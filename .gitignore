@@ -24,3 +24,4 @@ target
 .clj-kondo
 .portal
 .lsp
+.calva
