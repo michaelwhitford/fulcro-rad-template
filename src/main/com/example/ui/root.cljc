@@ -45,10 +45,10 @@
    :initial-state {:ui/ready? false
                    :ui/router    {}}}
   #?(:cljs
-     (if ready?
-       (let [busy? (seq active-remotes)]
-         (comp/fragment
-           (toast/ui-toast-container)
+     (comp/fragment
+       (toast/ui-toast-container)
+       (if ready?
+         (let [busy? (seq active-remotes)]
            (dom/div
              (div :.ui.top.menu
                (div :.ui.item "Demo")
@@ -59,9 +59,9 @@
                      (ui-dropdown-item {:onClick (fn [] (form/create! this AccountForm))} "New")))
                  (div :.ui.tiny.loader {:classes [(when busy? "active")]})))
              (div :.ui.segment
-               (ui-main-router router)))))
-       (div :.ui.active.dimmer
-         (div :.ui.large.text.loader "Loading")))))
+               (ui-main-router router))))
+         (div :.ui.active.dimmer
+           (div :.ui.large.text.loader "Loading"))))))
 
 (def ui-root (comp/factory Root))
 
