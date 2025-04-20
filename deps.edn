@@ -6,6 +6,7 @@
            com.fulcrologic/fulcro-rad             {:mvn/version "1.6.12"}
            com.fulcrologic/fulcro-rad-semantic-ui {:mvn/version "1.4.6"}
            com.fulcrologic/fulcro-i18n            {:mvn/version "1.1.2"}
+           com.fulcrologic/fulcro-inspect         {:mvn/version "1.0.4"}
 
            ;; General extras
            cljc.java-time/cljc.java-time          {:mvn/version "0.1.18"}

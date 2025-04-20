@@ -3,6 +3,8 @@
     [com.example.application :refer [SPA]]
     [com.example.ui.root :refer [LandingPage Root]]
     [com.example.ui.toast :as toast]
+    [fulcro.inspect.tool :as it]
+    [com.fulcrologic.devtools.common.target :refer [ido]]
     [com.fulcrologic.fulcro.algorithms.timbre-support :refer [console-appender prefix-output-fn]]
     [com.fulcrologic.fulcro.application :as app]
     [com.fulcrologic.fulcro.components :as comp]
@@ -19,7 +21,8 @@
 
 (defn setup-RAD [app]
   (rad-app/install-ui-controls! app sui/all-controls)
-  (report/install-formatter! app :boolean :affirmation (fn [_ value] (if value "yes" "no"))))
+  (report/install-formatter! app :boolean :affirmation (fn [_ value] (if value "yes" "no")))
+  (ido (it/add-fulcro-inspect! app)))
 
 (defn wrap-error-reporting []
   (let [debounced-toast! (debounce toast/toast! 1000)]
@@ -35,7 +38,7 @@
                              js/fulcro_network_csrf_token)]
                  {:remotes
                   {:remote (net/fulcro-http-remote {:url "/api"
-                                                                ; add middleware and use `toast!` for errors
+                                                    ; add middleware and use `toast!` for errors
                                                     :response-middleware response-middleware
                                                     :request-middleware (rad-app/secured-request-middleware {:csrf-token token})})}})))
 
