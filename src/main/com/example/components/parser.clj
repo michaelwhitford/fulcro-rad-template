@@ -1,8 +1,5 @@
 (ns com.example.components.parser
   (:require
-    #_[com.fulcrologic.rad.database-adapters.datomic-cloud :as datomic]
-    #_[com.wsscode.pathom.connect :as pc]
-    #_[com.wsscode.pathom.core :as p]
     [com.example.components.auto-resolvers :refer [automatic-resolvers]]
     [com.example.components.blob-store :as bs]
     [com.example.components.config :refer [config]]
@@ -23,7 +20,7 @@
 
 (def all-resolvers
   "The list of all hand-written resolvers/mutations."
-  [#_index-explorer m.account/resolvers])
+  [m.account/resolvers])
 
 (defstate parser
   :start
