@@ -6,10 +6,12 @@
     [fulcro.inspect.tool :as it]
     [com.fulcrologic.devtools.common.target :refer [ido]]
     [com.fulcrologic.fulcro.algorithms.timbre-support :refer [console-appender prefix-output-fn]]
+    [com.fulcrologic.fulcro.algorithms.tx-processing.batched-processing :as btxn]
     [com.fulcrologic.fulcro.application :as app]
     [com.fulcrologic.fulcro.components :as comp]
     [com.fulcrologic.fulcro.mutations :as m]
     [com.fulcrologic.fulcro.networking.http-remote :as net]
+    [com.fulcrologic.fulcro.react.version18 :refer [with-react18]]
     [com.fulcrologic.rad.application :as rad-app]
     [com.fulcrologic.rad.rendering.semantic-ui.semantic-ui-controls :as sui]
     [com.fulcrologic.rad.report :as report]
@@ -33,14 +35,16 @@
 
 (def response-middleware (-> (wrap-error-reporting) (net/wrap-fulcro-response)))
 
-(defonce app (rad-app/fulcro-rad-app
-               (let [token (when-not (undefined? js/fulcro_network_csrf_token)
-                             js/fulcro_network_csrf_token)]
-                 {:remotes
-                  {:remote (net/fulcro-http-remote {:url "/api"
+(defonce app (-> (rad-app/fulcro-rad-app
+                   (let [token (when-not (undefined? js/fulcro_network_csrf_token)
+                                 js/fulcro_network_csrf_token)]
+                     {:remotes
+                      {:remote (net/fulcro-http-remote {:url "/api"
                                                     ; add middleware and use `toast!` for errors
-                                                    :response-middleware response-middleware
-                                                    :request-middleware (rad-app/secured-request-middleware {:csrf-token token})})}})))
+                                                        :response-middleware response-middleware
+                                                        :request-middleware (rad-app/secured-request-middleware {:csrf-token token})})}}))
+                 (with-react18)
+                 (btxn/with-batched-reads)))
 
 (defn refresh []
   ;; hot code reload of installed controls
